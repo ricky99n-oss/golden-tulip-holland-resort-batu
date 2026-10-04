@@ -189,6 +189,29 @@ footer>small{grid-column:1/-1;margin-top:30px;padding-top:25px;border-top:1px so
 .detail-dialog,.booking-dialog{width:min(700px,calc(100% - 30px));max-height:88vh;padding:45px;border:0;box-shadow:var(--shadow)}
 dialog::backdrop{background:rgba(6,22,31,.72);backdrop-filter:blur(4px)}
 .dialog-close{position:absolute;top:16px;right:16px;display:grid;width:42px;height:42px;place-items:center;border:1px solid var(--line);background:#fff;cursor:pointer}
+.promo-dialog{width:min(920px,calc(100% - 32px));max-height:min(720px,calc(100vh - 32px));padding:0;overflow:hidden;border:1px solid rgba(201,164,92,.45);background:#fff;box-shadow:0 40px 120px rgba(4,19,29,.42)}
+.promo-dialog[open]{display:grid;grid-template-columns:44% 56%;animation:promoMistIn .8s cubic-bezier(.18,.8,.2,1) both}
+.promo-dialog::backdrop{background:rgba(5,20,29,.72);animation:promoBackdrop .6s ease both;backdrop-filter:blur(10px)}
+.promo-close{position:absolute;z-index:4;top:18px;right:18px;display:grid;width:44px;height:44px;place-items:center;border:1px solid rgba(23,54,76,.18);border-radius:50%;background:rgba(255,255,255,.9);color:var(--navy);cursor:pointer;box-shadow:0 10px 30px rgba(8,28,40,.12);backdrop-filter:blur(8px)}
+.promo-close:hover{color:#fff;background:var(--gold);border-color:var(--gold)}
+.promo-visual{position:relative;min-height:560px;overflow:hidden;background:var(--navy)}
+.promo-visual:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(7,25,36,.8),rgba(7,25,36,.05) 65%)}
+.promo-visual img{width:100%;height:100%;object-fit:cover}
+.promo-visual>div{position:absolute;z-index:2;right:30px;bottom:30px;left:30px;display:flex;align-items:center;gap:14px;color:#fff}
+.promo-visual .brand-mark{flex:0 0 auto}
+.promo-visual small{font-size:10px;font-weight:700;line-height:1.6;letter-spacing:.18em}
+.promo-content{display:flex;flex-direction:column;justify-content:center;padding:70px 64px 58px}
+.promo-content h2{margin:0;color:var(--navy);font:clamp(35px,3.5vw,50px)/1.02 var(--serif);letter-spacing:-.035em}
+.promo-content form{display:grid;gap:12px;margin-top:38px}
+.promo-content label{color:var(--navy);font-size:12px;font-weight:700;letter-spacing:.06em}
+.whatsapp-field{display:grid;grid-template-columns:auto 1fr;min-height:54px;border:1px solid var(--line);background:var(--paper)}
+.whatsapp-field:focus-within{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,164,92,.12)}
+.whatsapp-field span{display:grid;place-items:center;padding:0 16px;border-right:1px solid var(--line);color:var(--navy);font-size:14px;font-weight:700}
+.whatsapp-field input{min-width:0;padding:0 16px;border:0;outline:0;background:transparent;color:var(--ink);font-size:16px}
+.promo-content form>small{color:var(--muted);font-size:11px}
+.promo-content form>.primary-button{margin-top:8px}
+@keyframes promoMistIn{0%{opacity:0;filter:blur(18px);transform:translateY(34px) scale(.97)}55%{filter:blur(3px)}100%{opacity:1;filter:blur(0);transform:none}}
+@keyframes promoBackdrop{from{opacity:0}to{opacity:1}}
 .detail-dialog h2,.booking-dialog h2{font:44px var(--serif)}
 .detail-dialog ul{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0;list-style:none}
 .detail-dialog li{padding:13px;border:1px solid var(--line);font-size:13px}
@@ -296,6 +319,13 @@ dialog::backdrop{background:rgba(6,22,31,.72);backdrop-filter:blur(4px)}
 .toast svg{width:16px;color:var(--gold-light)}
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s,transform .7s}
 .reveal.visible{opacity:1;transform:none}
+.mist-section{position:relative}
+.mist-section:before{content:"";position:absolute;z-index:8;inset:0;opacity:0;pointer-events:none;background:radial-gradient(ellipse at 15% 45%,rgba(255,255,255,.72),transparent 34%),radial-gradient(ellipse at 72% 58%,rgba(222,232,236,.58),transparent 38%),linear-gradient(110deg,transparent 8%,rgba(255,255,255,.46) 46%,transparent 82%);backdrop-filter:blur(5px);transform:translate3d(-8%,14%,0) scale(1.08)}
+.mist-section.mist-entered:before{animation:sectionMistClear 1.65s cubic-bezier(.2,.72,.18,1) both}
+.mist-reveal{opacity:0;filter:blur(16px);transform:translate3d(0,34px,0) scale(.985);transform-origin:center bottom;will-change:opacity,filter,transform}
+.mist-reveal.mist-visible{animation:mistReveal 1.05s cubic-bezier(.16,.78,.18,1) var(--mist-delay,0ms) forwards}
+@keyframes mistReveal{0%{opacity:0;filter:blur(16px);transform:translate3d(0,34px,0) scale(.985);text-shadow:0 14px 32px rgba(255,255,255,.65)}58%{opacity:.82;filter:blur(3px);text-shadow:0 8px 18px rgba(255,255,255,.28)}100%{opacity:1;filter:blur(0);transform:none;text-shadow:none}}
+@keyframes sectionMistClear{0%{opacity:0;transform:translate3d(-8%,14%,0) scale(1.08)}18%{opacity:.72}62%{opacity:.32}100%{opacity:0;transform:translate3d(10%,-10%,0) scale(1.16)}}
 
 @media(max-width:1050px){.desktop-nav{display:none}
 .menu-button{display:grid}
@@ -371,6 +401,14 @@ footer>div,footer nav{margin-top:34px}
 .booking-dialog form{grid-template-columns:1fr}
 .detail-dialog,.booking-dialog{padding:35px 22px}
 .detail-dialog ul{grid-template-columns:1fr}
+.promo-dialog{width:calc(100% - 24px);max-height:calc(100vh - 24px)}
+.promo-dialog[open]{grid-template-columns:1fr;overflow:auto}
+.promo-visual{min-height:210px;max-height:230px}
+.promo-visual>div{right:22px;bottom:20px;left:22px}
+.promo-content{padding:34px 24px 30px}
+.promo-content h2{font-size:34px}
+.promo-content form{margin-top:26px}
+.promo-close{top:12px;right:12px}
 .admin-shell{grid-template-columns:1fr}
 .admin-sidebar{display:none}
 .admin-main{padding:0 16px 40px}
@@ -394,4 +432,6 @@ footer>div,footer nav{margin-top:34px}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}
 *,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}
 .reveal{opacity:1;transform:none}
+.mist-reveal{opacity:1;filter:none;transform:none}
+.mist-section:before{display:none}
 }

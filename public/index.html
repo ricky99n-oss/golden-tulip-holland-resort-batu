@@ -92,6 +92,12 @@
 
     <nav class="mobile-bottom" aria-label="Navigasi cepat"><a href="#home"><span>⌂</span>Home</a><a href="#rooms"><svg><use href="#i-bed"/></svg>Rooms</a><a class="mobile-tour" href="#tour"><svg><use href="#i-vr"/></svg></a><a href="#facilities"><svg><use href="#i-pool"/></svg>Explore</a><button id="mobileChat"><svg><use href="#i-chat"/></svg>GT AI</button></nav>
 
+    <dialog class="promo-dialog" id="promoDialog" aria-labelledby="promoTitle">
+      <button class="promo-close" id="promoClose" aria-label="Tutup penawaran"><svg><use href="#i-close"/></svg></button>
+      <div class="promo-visual"><img src="assets/gt-2.jpeg" alt="Golden Tulip Holland Resort Batu"/><div><span class="brand-mark">GT</span><small>GOLDEN TULIP<br/>HOLLAND RESORT BATU</small></div></div>
+      <div class="promo-content"><p class="eyebrow">EXCLUSIVE HOTEL OFFERS</p><h2 id="promoTitle">Dapatkan Penawaran Terbaru dan Exclusive dengan memasukkan nomor WhatsApp Anda</h2><form id="promoForm"><label for="promoWhatsapp">Nomor WhatsApp</label><div class="whatsapp-field"><span>+62</span><input id="promoWhatsapp" type="tel" inputmode="numeric" autocomplete="tel" placeholder="812 3456 7890" pattern="[0-9 ]{8,16}" required/></div><small>Gunakan nomor WhatsApp yang aktif.</small><button class="primary-button" type="submit">Dapatkan Penawaran</button></form></div>
+    </dialog>
+
     <button class="ai-launcher" id="aiLauncher" aria-label="Buka GT AI"><span class="ai-pulse"></span><svg><use href="#i-chat"/></svg><span><b>GT AI</b><small>Ask our hotel concierge</small></span></button>
     <aside class="ai-panel" id="aiPanel" aria-label="GT AI concierge"><div class="ai-head"><div><span class="gt-orb">GT</span><div><b>GT AI</b><small><i></i> Your hotel concierge</small></div></div><button id="aiClose" aria-label="Tutup chat"><svg><use href="#i-close"/></svg></button></div><div class="ai-messages" id="aiMessages"><div class="message bot">Selamat datang. Saya GT AI. Saya bisa membantu menjelaskan tipe kamar, kisaran harga, promo, sarapan, dan fasilitas resor.</div><div class="quick-prompts"><button>Apa tipe kamarnya?</button><button>Ada kolam air hangat?</button><button>Berapa biaya sarapan?</button></div></div><form class="ai-form" id="aiForm"><label class="sr-only" for="aiInput">Tulis pertanyaan</label><input id="aiInput" placeholder="Ask about rooms, facilities…" autocomplete="off"/><button aria-label="Kirim"><svg><use href="#i-arrow"/></svg></button></form></aside>
 

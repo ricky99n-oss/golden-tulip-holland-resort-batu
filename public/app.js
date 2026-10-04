@@ -21,9 +21,40 @@ $(".mobile-close").addEventListener("click", () => mobileMenu.classList.remove("
 $$('.mobile-menu a').forEach((link) => link.addEventListener("click", () => mobileMenu.classList.remove("open")));
 
 const observer = new IntersectionObserver((entries) => entries.forEach((entry) => {
-  if (entry.isIntersecting) entry.target.classList.add("visible");
+  if (!entry.isIntersecting) return;
+  entry.target.classList.add("visible");
+  observer.unobserve(entry.target);
 }), { threshold: .12 });
 $$('.reveal').forEach((item) => observer.observe(item));
+
+const mistObserver = new IntersectionObserver((entries) => entries.forEach((entry) => {
+  if (!entry.isIntersecting) return;
+  entry.target.classList.add("mist-visible");
+  mistObserver.unobserve(entry.target);
+}), { threshold: .1, rootMargin: "0px 0px -7%" });
+
+const sectionMistObserver = new IntersectionObserver((entries) => entries.forEach((entry) => {
+  if (!entry.isIntersecting) return;
+  entry.target.classList.add("mist-entered");
+  sectionMistObserver.unobserve(entry.target);
+}), { threshold: .06 });
+
+$$('main > section, body > footer').forEach((section) => {
+  section.classList.add("mist-section");
+  sectionMistObserver.observe(section);
+});
+
+const mistSelectors = [
+  ".hero-content > *", ".hero-facts > div", ".intro-copy > *", ".feature-quote",
+  ".section-top > div", ".section-top > p", ".room-card", ".price-note",
+  ".tour-heading > div", ".tour-heading > p", ".panorama-wrap", ".facility-card",
+  ".closing > div", "body > footer > *",
+];
+$$(mistSelectors.join(",")).forEach((item, index) => {
+  item.classList.add("mist-reveal");
+  item.style.setProperty("--mist-delay", `${(index % 5) * 90}ms`);
+  mistObserver.observe(item);
+});
 
 const roomData = {
   "Deluxe King": { label: "DELUXE KING", bed: "King Size", copy: "Tersedia dengan pilihan ranjang King Size." },
@@ -59,6 +90,32 @@ $$('dialog').forEach((dialog) => dialog.addEventListener("click", (event) => {
   const rect = dialog.getBoundingClientRect();
   if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close();
 }));
+
+const promoDialog = $("#promoDialog");
+const promoWhatsapp = $("#promoWhatsapp");
+const closePromo = () => promoDialog.close();
+$("#promoClose").addEventListener("click", closePromo);
+promoDialog.addEventListener("close", () => {
+  try { sessionStorage.setItem("gt_promo_seen", "1"); } catch {}
+});
+promoWhatsapp.addEventListener("input", () => promoWhatsapp.setCustomValidity(""));
+$("#promoForm").addEventListener("submit", (event) => {
+  event.preventDefault();
+  let digits = promoWhatsapp.value.replace(/\D/g, "");
+  if (digits.startsWith("0")) digits = digits.slice(1);
+  if (!/^\d{8,13}$/.test(digits)) {
+    promoWhatsapp.setCustomValidity("Masukkan nomor WhatsApp yang valid.");
+    promoWhatsapp.reportValidity();
+    return;
+  }
+  try { localStorage.setItem("gt_promo_whatsapp", `+62${digits}`); } catch {}
+  closePromo();
+  showToast("Terima kasih. Penawaran eksklusif akan dikirim melalui WhatsApp.");
+});
+
+let showPromo = true;
+try { showPromo = !sessionStorage.getItem("gt_promo_seen") && !localStorage.getItem("gt_promo_whatsapp"); } catch {}
+if (showPromo) setTimeout(() => promoDialog.showModal(), 900);
 
 const bookingDialog = $("#bookingDialog");
 $$('[data-book]').forEach((button) => button.addEventListener("click", () => bookingDialog.showModal()));
