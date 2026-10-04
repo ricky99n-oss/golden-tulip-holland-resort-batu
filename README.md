@@ -1,8 +1,12 @@
-# Golden Tulip Holland Resort Batu — Interactive Prototype
+# Golden Tulip Holland Resort Batu
 
-Responsive hotel profile, room and facility catalogue, 360° tour, GT AI chat, and an interactive hotel CMS prototype.
+Interactive hotel website prototype with responsive company profile, room and facility catalogue, 360° tour, GT AI chat, and a hotel CMS demo.
 
-## Run locally
+- Production: https://golden-tulip-holland-resort-batu.pages.dev
+- Repository: https://github.com/ricky99n-oss/golden-tulip-holland-resort-batu
+- Local folder: `C:\Users\THINKPAD\Developer\golden-tulip-batu`
+
+## Local development
 
 ```bash
 npm run dev
@@ -16,12 +20,20 @@ Open `http://127.0.0.1:4173`.
 npm run build
 ```
 
-The production-ready static files are written to `dist/`.
+Production files are written to `dist/`.
 
-## Gemini demo
+## Deploy to Cloudflare Pages
 
-Open **CMS Admin → GT AI**, add a Gemini API key, and click **Save for this session**. The key is held in `sessionStorage` for prototype testing and is never included in the repository. A production implementation should proxy Gemini through a server-side Cloudflare Worker secret.
+```bash
+npm run deploy
+```
+
+The deployment targets the existing Cloudflare Pages project `golden-tulip-holland-resort-batu`.
+
+## Gemini prototype
+
+Open **CMS Admin → GT AI**, add a Gemini API key, and click **Save for this session**. The key remains in `sessionStorage` and is never committed. For production, proxy Gemini through a server-side Worker secret.
 
 ## Prototype storage
 
-CMS text settings and uploaded preview images are stored in the current browser only. This keeps the prototype safe to try without a real hotel database or production authentication.
+CMS text settings and uploaded preview images are stored in the current browser only. No production hotel database or authentication is included in this prototype.

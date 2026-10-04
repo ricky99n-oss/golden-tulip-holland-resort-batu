@@ -2,4 +2,6 @@ dist/
 .env
 .env.local
 .sites-runtime/
+.wrangler/
 node_modules/
+*.tar.gz
