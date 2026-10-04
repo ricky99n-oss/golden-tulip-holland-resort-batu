@@ -68,31 +68,76 @@ $("#bookingForm").addEventListener("submit", (event) => {
   showToast("Availability request simulated — prototype mode");
 });
 
-// Lightweight panorama panning with pointer, touch, keyboard, and zoom controls.
+// True equirectangular WebGL viewer: full yaw, pitch, zoom, inertia, and auto-rotation.
 const panorama = $("#panorama");
-const panoramaImage = $("#panoramaImage");
-let pan = -18.75, zoom = 1, dragging = false, startX = 0, startPan = pan;
-function updatePan() {
-  pan = Math.max(-47, Math.min(-1, pan));
-  panorama.style.setProperty("--pan-x", `${pan}%`);
-  panorama.style.setProperty("--pan-zoom", zoom);
-}
-panorama.addEventListener("pointerdown", (event) => { dragging = true; startX = event.clientX; startPan = pan; panorama.setPointerCapture(event.pointerId); });
-panorama.addEventListener("pointermove", (event) => { if (dragging) { pan = startPan + (event.clientX - startX) / panorama.clientWidth * 45; updatePan(); } });
-panorama.addEventListener("pointerup", () => dragging = false);
-panorama.addEventListener("pointercancel", () => dragging = false);
-panorama.addEventListener("keydown", (event) => {
-  if (event.key === "ArrowLeft" || event.key === "ArrowRight") { pan += event.key === "ArrowLeft" ? 3 : -3; updatePan(); }
+const panoramaStage = $("#panoramaStage");
+const rotateButton = $("#toggleRotate");
+const builtInScenes = {
+  "assets/deluxe-360.png": "deluxe",
+  "assets/pool-360.png": "pool",
+};
+let uploadedSceneIndex = 0;
+let autoRotateEnabled = true;
+
+const panoramaViewer = window.pannellum?.viewer("panorama", {
+  default: {
+    firstScene: "deluxe",
+    autoLoad: true,
+    autoRotate: -2,
+    autoRotateInactivityDelay: 2500,
+    sceneFadeDuration: 650,
+    showControls: false,
+    mouseZoom: true,
+    keyboardZoom: true,
+    friction: .12,
+    escapeHTML: true,
+  },
+  scenes: {
+    deluxe: { type: "equirectangular", panorama: "assets/deluxe-360.png", pitch: 0, yaw: 0, hfov: 100 },
+    pool: { type: "equirectangular", panorama: "assets/pool-360.png", pitch: 0, yaw: 0, hfov: 100 },
+  },
 });
-$("#zoomIn").addEventListener("click", () => { zoom = Math.min(1.35, zoom + .1); updatePan(); });
-$("#zoomOut").addEventListener("click", () => { zoom = Math.max(1, zoom - .1); updatePan(); });
-$("#resetView").addEventListener("click", () => { pan = innerWidth < 760 ? -28 : -18.75; zoom = 1; updatePan(); });
+
+function syncRotateButton() {
+  rotateButton.classList.toggle("active", autoRotateEnabled);
+  rotateButton.setAttribute("aria-pressed", String(autoRotateEnabled));
+  rotateButton.setAttribute("aria-label", autoRotateEnabled ? "Jeda putaran otomatis" : "Mulai putaran otomatis");
+  rotateButton.textContent = autoRotateEnabled ? "Ⅱ" : "▶";
+}
+
+if (panoramaViewer) {
+  panoramaViewer.on("load", () => {
+    panoramaStage.classList.add("is-ready");
+    if (autoRotateEnabled) panoramaViewer.startAutoRotate(-2);
+  });
+  panoramaViewer.on("error", () => panoramaStage.classList.add("has-error"));
+} else {
+  panoramaStage.classList.add("has-error");
+  panorama.innerHTML = '<p class="panorama-error">Viewer 360° tidak dapat dimuat pada browser ini.</p>';
+}
+
+$("#zoomIn").addEventListener("click", () => panoramaViewer?.setHfov(Math.max(50, panoramaViewer.getHfov() - 10), 250));
+$("#zoomOut").addEventListener("click", () => panoramaViewer?.setHfov(Math.min(120, panoramaViewer.getHfov() + 10), 250));
+$("#resetView").addEventListener("click", () => {
+  panoramaViewer?.lookAt(0, 0, 100, 700);
+  if (autoRotateEnabled) panoramaViewer?.startAutoRotate(-2);
+});
+rotateButton.addEventListener("click", () => {
+  autoRotateEnabled = !autoRotateEnabled;
+  if (autoRotateEnabled) panoramaViewer?.startAutoRotate(-2);
+  else panoramaViewer?.stopAutoRotate();
+  syncRotateButton();
+});
+
 function setScene(src, label, trigger) {
-  panoramaImage.style.filter = "blur(7px)";
-  panoramaImage.src = src;
-  panoramaImage.alt = `Panorama 360 ${label || "hotel"}`;
-  panoramaImage.onload = () => panoramaImage.style.filter = "none";
-  pan = innerWidth < 760 ? -28 : -18.75; zoom = 1; updatePan();
+  if (!panoramaViewer) return;
+  panoramaStage.classList.remove("is-ready", "has-error");
+  let sceneId = builtInScenes[src];
+  if (!sceneId) {
+    sceneId = `uploaded-${++uploadedSceneIndex}`;
+    panoramaViewer.addScene(sceneId, { type: "equirectangular", panorama: src, pitch: 0, yaw: 0, hfov: 100 });
+  }
+  panoramaViewer.loadScene(sceneId, 0, 0, 100);
   if (trigger) $$('.tour-scenes button').forEach((item) => item.classList.toggle("active", item === trigger));
 }
 $$('.tour-scenes button').forEach((button) => button.addEventListener("click", () => setScene(button.dataset.scene, button.dataset.label, button)));

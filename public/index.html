@@ -8,7 +8,9 @@
     <title>Golden Tulip Holland Resort Batu</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="preload" href="assets/gt-hero.jpeg" as="image" />
+    <link rel="stylesheet" href="vendor/pannellum/pannellum.css" />
     <link rel="stylesheet" href="styles.css" />
+    <script src="vendor/pannellum/pannellum.js" defer></script>
     <script src="app.js" defer></script>
   </head>
   <body>
@@ -65,9 +67,9 @@
       </section>
 
       <section class="tour section-pad" id="tour">
-        <div class="tour-heading"><div><p class="eyebrow">03 · IMMERSIVE EXPERIENCE</p><h2>Step inside,<br/><em>before you arrive.</em></h2></div><p>Drag to look around our rooms and signature spaces. Every panorama can be replaced from the CMS.</p></div>
+        <div class="tour-heading"><div><p class="eyebrow">03 · IMMERSIVE EXPERIENCE</p><h2>Step inside,<br/><em>before you arrive.</em></h2></div><p>Drag ke segala arah untuk melihat ruang secara 360°, gunakan scroll atau tombol untuk zoom. Setiap panorama dapat diganti dari CMS.</p></div>
         <div class="panorama-wrap">
-          <div class="panorama" id="panorama" tabindex="0" aria-label="Tur panorama 360 derajat"><img id="panoramaImage" src="assets/deluxe-360.png" alt="Panorama 360 Deluxe King room" draggable="false"/><div class="panorama-overlay"><div class="tour-badge"><svg><use href="#i-vr"/></svg><span>Drag to explore</span></div><div class="tour-center"><span>360°</span><small>CLICK & DRAG</small></div><div class="tour-controls"><button id="zoomOut" aria-label="Perkecil">−</button><button id="resetView" aria-label="Atur ulang pandangan">⌾</button><button id="zoomIn" aria-label="Perbesar">+</button></div></div></div>
+          <div class="panorama-stage" id="panoramaStage"><div class="panorama" id="panorama" aria-label="Tur panorama 360 derajat interaktif"></div><div class="panorama-overlay"><div class="tour-badge"><svg><use href="#i-vr"/></svg><span>Drag 360° · lihat atas & bawah</span></div><div class="tour-center"><span>360°</span><small>CLICK & DRAG</small></div><div class="tour-controls"><button id="zoomOut" aria-label="Perkecil pandangan">−</button><button id="resetView" aria-label="Atur ulang pandangan">⌾</button><button id="toggleRotate" class="active" aria-label="Jeda putaran otomatis" aria-pressed="true">Ⅱ</button><button id="zoomIn" aria-label="Perbesar pandangan">+</button></div></div></div>
           <div class="tour-scenes"><button class="active" data-scene="assets/deluxe-360.png" data-label="Deluxe King"><span>01</span><b>Deluxe King</b><small>King Size bed</small></button><button data-scene="assets/pool-360.png" data-label="Swimming Pool"><span>02</span><b>Swimming Pool</b><small>Pool area</small></button></div>
         </div>
       </section>
