@@ -26,15 +26,14 @@ const observer = new IntersectionObserver((entries) => entries.forEach((entry) =
 $$('.reveal').forEach((item) => observer.observe(item));
 
 const roomData = {
-  "Deluxe King": { label: "COUPLES’ FAVOURITE", guests: "2 guests", size: "32 m²", price: "IDR 1,100,000", copy: "A calm, elegant base for two with a king bed, premium linen, private balcony, and mountain or city view." },
-  "Premier Twin": { label: "FAMILY & FRIENDS", guests: "2–3 guests", size: "36 m²", price: "IDR 1,450,000", copy: "A flexible stay with two premium beds, generous storage, an air purifier, and a private view balcony." },
-  "Premier King": { label: "PANORAMIC COMFORT", guests: "2 guests", size: "38 m²", price: "IDR 1,850,000", copy: "A spacious king room with an elevated view, lounge corner, warm timber details, and seamless five-star comfort." }
+  "Deluxe King": { label: "DELUXE KING", bed: "King Size", copy: "Tersedia dengan pilihan ranjang King Size." },
+  "Premier Twin": { label: "PREMIER TWIN", bed: "", copy: "Tersedia untuk dipesan melalui Traveloka." },
+  "Premier King": { label: "PREMIER KING", bed: "", copy: "Tersedia untuk dipesan melalui Traveloka." }
 };
-const roomFacilities = ["Premium king/twin bedding", "Private view balcony", "Large Smart TV", "In-room air purifier", "Modern bathroom", "Complete toiletries", "Tea & coffee maker", "Electronic key card"];
 const detailDialog = $("#detailDialog");
 function openRoom(name) {
   const room = roomData[name];
-  $("#dialogContent").innerHTML = `<p class="eyebrow">${room.label}</p><h2>${name}</h2><p>${room.copy}</p><div class="room-meta"><span>${room.guests}</span><span>${room.size}</span></div><ul>${roomFacilities.map((item) => `<li>✓ ${item}</li>`).join("")}</ul><div class="dialog-price"><span>From</span><strong>${room.price}</strong><small>/night</small></div>`;
+  $("#dialogContent").innerHTML = `<p class="eyebrow">${room.label}</p><h2>${name}</h2><p>${room.copy}</p>${room.bed ? `<div class="room-meta"><span>Bed: ${room.bed}</span></div>` : ""}<p>Harga bergantung pada tanggal check-in yang dipilih.</p><div class="dialog-price"><span>Price range</span><strong>Rp 1.100.000–Rp 2.500.000+</strong><small>/malam</small></div><p>Promo dapat berupa “Diskon s.d. 50% + Gratis Pembatalan” atau kode JALANYUK. Tambahan sarapan di lokasi untuk pemesanan tanpa sarapan dikenakan Rp 200.000/tamu.</p>`;
   detailDialog.showModal();
 }
 $$('[data-room]').forEach((button) => button.addEventListener("click", () => openRoom(button.dataset.room)));
@@ -44,9 +43,11 @@ $$('.room-tabs button').forEach((button) => button.addEventListener("click", () 
 }));
 
 const facilityData = {
-  "Water & Relaxation": ["Indoor heated swimming pool", "Outdoor swimming pool", "Kids pool", "Spa", "Jacuzzi", "Sauna"],
-  "Sports & Entertainment": ["Green Maze Garden", "Fitness center", "Billiards", "Table tennis", "Kids Club", "Indoor & outdoor playground", "Electric motorbike rental"],
-  "Culinary": ["Skydome Infinite8 Eateria", "Wood-fired pizza", "Cocktails & mocktails", "Live teppanyaki", "The Peak buffet restaurant", "Indonesian and Western breakfast"],
+  "Swimming Pools": ["Kolam renang besar outdoor", "Kolam renang khusus anak", "Kolam renang indoor dengan air hangat"],
+  "Health & Relaxation": ["Fitness center", "Spa", "Jacuzzi", "Sauna"],
+  "Entertainment & Children": ["Kids club", "Playground indoor", "Playground outdoor", "Ruang permainan dengan meja biliar dan tenis meja", "Taman untuk bersantai"],
+  "Restaurants & Bar": ["Total 3 restoran", "The Peak — sarapan menu Nusantara dan Western", "Skydome Infinite8 Eateria — lounge & bar eksklusif bergaya kubah dengan pemandangan kota dan pegunungan"],
+  "General & Business": ["Resepsionis 24 jam", "WiFi", "AC", "Lift", "Area parkir", "Room service", "Layanan laundry", "Concierge", "Business center", "Meeting rooms"],
 };
 $$('[data-facility]').forEach((button) => button.addEventListener("click", () => {
   const name = button.dataset.facility;
@@ -105,15 +106,15 @@ $("#aiLauncher").addEventListener("click", () => toggleAI());
 $("#mobileChat").addEventListener("click", () => toggleAI(true));
 $("#aiClose").addEventListener("click", () => toggleAI(false));
 
-const hotelKnowledge = `Golden Tulip Holland Resort Batu is a 5-star resort at Jl. Cherry No. 10 Panderman Hills, Batu, East Java. It has 260 rooms across 7 floors. Rooms: Deluxe King for couples, Premier Twin for friends/family, Premier King. Rates range IDR 1,100,000 to IDR 2,500,000++ per night and vary by date. Room facilities: premium bedding, balcony with mountain or city views, Smart TV, air purifier, modern bathroom, toiletries, tea/coffee maker, electronic key card. Facilities: indoor heated swimming pool, outdoor pool, kids pool, spa, jacuzzi, sauna, Green Maze Garden, gym, billiards, table tennis, Kids Club, playground, electric motorbike rental. Dining: Skydome Infinite8 Eateria and The Peak buffet restaurant. Services: 24-hour reception, room service, concierge, meeting rooms, business center, buggy/car shuttle, parking, free high-speed WiFi. Nearby: Jatim Park 2 760m, Jatim Park 1 850m, BNS 1.3km, Kusuma Agrowisata 1.3km, Batu City Square 2.3km.`;
+const hotelKnowledge = `Golden Tulip Holland Resort Batu memiliki 260 kamar di 7 lantai. Tipe kamar: Deluxe King dengan pilihan ranjang King Size, Premier Twin, dan Premier King. Harga bergantung tanggal check-in, umumnya Rp 1.100.000 hingga Rp 2.500.000+ per malam. Promo dapat berupa Diskon s.d. 50% + Gratis Pembatalan atau kode JALANYUK. Tambahan sarapan di lokasi untuk kamar tanpa sarapan adalah Rp 200.000 per tamu. Fasilitas kolam: kolam renang besar outdoor, kolam anak, dan kolam indoor air hangat. Kesehatan dan relaksasi: fitness center, spa, jacuzzi, sauna. Hiburan: kids club, playground indoor dan outdoor, ruang permainan dengan meja biliar dan tenis meja, taman untuk bersantai. Terdapat total 3 restoran. The Peak menyediakan sarapan Nusantara dan Western. Skydome Infinite8 Eateria adalah lounge dan bar eksklusif bergaya kubah dengan pemandangan kota dan pegunungan. Fasilitas umum dan bisnis: resepsionis 24 jam, WiFi, AC, lift, area parkir, room service, laundry, concierge, business center, dan meeting rooms.`;
 function localAI(question) {
   const q = question.toLowerCase();
-  if (/keluarga|family|anak/.test(q)) return "Untuk keluarga, Premier Twin paling fleksibel. Anda juga bisa menikmati indoor heated pool, kids pool, Kids Club, playground indoor/outdoor, dan Green Maze Garden.";
-  if (/kolam|pool|renang|hangat/.test(q)) return "Ya. Resort memiliki indoor heated swimming pool yang nyaman untuk anak, outdoor pool, kids pool, serta jacuzzi dan sauna untuk relaksasi.";
-  if (/jatim|jarak|dekat|location/.test(q)) return "Jatim Park 2 berjarak sekitar 760 meter dan Jatim Park 1 sekitar 850 meter. BNS dan Kusuma Agrowisata sekitar 1,3 km dari hotel.";
-  if (/harga|rate|price|berapa/.test(q)) return "Harga kamar mulai sekitar IDR 1.100.000 hingga IDR 2.500.000++ per malam. Tarif dapat berubah pada akhir pekan dan high season.";
-  if (/makan|restoran|food|breakfast|sarapan/.test(q)) return "The Peak menyediakan buffet breakfast Indonesia dan Western. Untuk pengalaman spesial, Skydome Infinite8 menyajikan wood-fired pizza, mocktail/cocktail, dan live teppanyaki dengan panorama kota dan gunung.";
-  return "Tentu. Saya bisa membantu tentang tipe kamar, harga, fasilitas, restoran, tur 360°, atau akses ke tempat wisata di Batu. Apa yang paling ingin Anda ketahui?";
+  if (/keluarga|family|anak/.test(q)) return "Fasilitas keluarga meliputi kolam anak, Kids Club, playground indoor dan outdoor, ruang permainan dengan meja biliar dan tenis meja, serta taman untuk bersantai.";
+  if (/kolam|pool|renang|hangat/.test(q)) return "Tersedia kolam renang besar outdoor, kolam renang khusus anak, dan kolam renang indoor dengan air hangat.";
+  if (/harga|rate|price|berapa|promo/.test(q)) return "Kisaran harga umumnya Rp 1.100.000 hingga Rp 2.500.000+ per malam dan bergantung pada tanggal check-in. Promo dapat berupa Diskon s.d. 50% + Gratis Pembatalan atau kode JALANYUK.";
+  if (/makan|restoran|food|breakfast|sarapan/.test(q)) return "Terdapat total 3 restoran. The Peak menyediakan sarapan Nusantara dan Western. Skydome Infinite8 Eateria adalah lounge & bar eksklusif bergaya kubah dengan pemandangan kota dan pegunungan. Tambahan sarapan di lokasi untuk kamar tanpa sarapan adalah Rp 200.000/tamu.";
+  if (/kamar|room|deluxe|premier/.test(q)) return "Tipe kamar yang tersedia adalah Deluxe King dengan pilihan ranjang King Size, Premier Twin, dan Premier King.";
+  return "Saya bisa membantu tentang tipe kamar, kisaran harga, promo, sarapan, fasilitas resor, restoran, dan tur 360°. Apa yang ingin Anda ketahui?";
 }
 async function askGemini(question) {
   const key = sessionStorage.getItem("gt_gemini_key");
@@ -154,7 +155,7 @@ function closeAdmin() { adminShell.classList.remove("open"); document.body.class
 $$('[data-open-admin]').forEach((button) => button.addEventListener("click", openAdmin));
 $(".admin-close").addEventListener("click", closeAdmin);
 $("#previewSite").addEventListener("click", closeAdmin);
-const adminTitles = { overview: "Content overview", hero: "Hero & identity", rooms: "Room catalogue", facilities: "Facilities & services", tour: "360° tour scenes", ai: "GT AI settings" };
+const adminTitles = { overview: "Content overview", hero: "Hero & identity", rooms: "Room catalogue", facilities: "Facilities & services", tour: "360° tour scenes" };
 function setAdminTab(name) {
   $$('[data-admin-tab]').forEach((button) => button.classList.toggle("active", button.dataset.adminTab === name));
   $$('[data-admin-page]').forEach((page) => page.classList.toggle("active", page.dataset.adminPage === name));
@@ -195,19 +196,6 @@ function addTourFile(file) {
 $("#tourUpload").addEventListener("change", (event) => addTourFile(event.target.files[0]));
 $("[data-tour-upload]").addEventListener("change", (event) => addTourFile(event.target.files[0]));
 $$('[data-set-scene]').forEach((button) => button.addEventListener("click", () => { closeAdmin(); location.hash = "tour"; setScene(button.dataset.setScene, button.closest("article").querySelector("h4").textContent); }));
-
-$("#aiSettings").addEventListener("submit", (event) => {
-  event.preventDefault();
-  const key = $("#geminiKey").value.trim();
-  if (key) sessionStorage.setItem("gt_gemini_key", key); else sessionStorage.removeItem("gt_gemini_key");
-  sessionStorage.setItem("gt_gemini_model", $("#geminiModel").value);
-  const welcome = $("#welcomeMessage").value.trim();
-  if (welcome) $$('.message.bot', $("#aiMessages"))[0].textContent = welcome;
-  $("#aiStatus").textContent = key ? "Gemini connected" : "Demo mode";
-  showToast(key ? "Gemini connected for this session" : "GT AI saved in demo mode");
-});
-$("#aiStatus").textContent = sessionStorage.getItem("gt_gemini_key") ? "Gemini connected" : "Demo mode";
-$("#geminiKey").value = sessionStorage.getItem("gt_gemini_key") || "";
 
 $("#addRoom").addEventListener("click", () => showToast("New room form ready in prototype flow"));
 $("#addFacility").addEventListener("click", () => showToast("New facility form ready in prototype flow"));
