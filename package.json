@@ -1,0 +1,9 @@
+{
+  "name": "golden-tulip-batu-prototype",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "build": "node scripts/build.mjs"
+  }
+}
