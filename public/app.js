@@ -115,7 +115,14 @@ $("#promoForm").addEventListener("submit", (event) => {
 
 let showPromo = true;
 try { showPromo = !sessionStorage.getItem("gt_promo_seen") && !localStorage.getItem("gt_promo_whatsapp"); } catch {}
-if (showPromo) setTimeout(() => promoDialog.showModal(), 900);
+if (showPromo) {
+  const schedulePromo = () => setTimeout(() => promoDialog.showModal(), 900);
+  if (document.documentElement.hasAttribute("data-askara-locked")) {
+    document.addEventListener("askara:unlocked", schedulePromo, { once: true });
+  } else {
+    schedulePromo();
+  }
+}
 
 const bookingDialog = $("#bookingDialog");
 $$('[data-book]').forEach((button) => button.addEventListener("click", () => bookingDialog.showModal()));
